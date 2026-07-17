@@ -26,3 +26,10 @@ jobs:
         with:
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          mcp-config: |
+            {
+              "playwright": {
+                "command": "npx",
+                "args": ["@anthropic-ai/claude-code-playwright"]
+              }
+            }
