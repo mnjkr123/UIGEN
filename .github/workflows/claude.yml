@@ -30,6 +30,24 @@ jobs:
             {
               "playwright": {
                 "command": "npx",
-                "args": ["@anthropic-ai/claude-code-playwright"]
+                "args": ["@anthropic-ai/claude-code-playwright"],
+                "permissions": {
+                  "allow": [
+                    "mcp__playwright__launch",
+                    "mcp__playwright__navigate",
+                    "mcp__playwright__click",
+                    "mcp__playwright__type",
+                    "mcp__playwright__screenshot",
+                    "mcp__playwright__get_page_content",
+                    "mcp__playwright__evaluate",
+                    "mcp__playwright__wait_for_selector",
+                    "mcp__playwright__fill",
+                    "mcp__playwright__press",
+                    "mcp__playwright__hover",
+                    "mcp__playwright__select_option",
+                    "mcp__playwright__check",
+                    "mcp__playwright__uncheck"
+                  ]
+                }
               }
             }
