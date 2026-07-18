@@ -10,14 +10,15 @@ export default async function Home() {
   // If user is authenticated, redirect to their most recent project
   if (user) {
     const projects = await getProjects();
-    
+
     if (projects.length > 0) {
       redirect(`/${projects[0].id}`);
     }
 
     // If no projects exist, create a new one
+    const randomId = Math.floor(Math.random() * 100000);
     const newProject = await createProject({
-      name: `New Design #${~~(Math.random() * 100000)}`,
+      name: `New Design #${randomId}`,
       messages: [],
       data: {},
     });
