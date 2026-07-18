@@ -1,17 +1,21 @@
 name: Claude Code Review
 
-# Custom Instructions:
-# If needed, use the mcp_playwright set of tools to launch a browser and interact with the app.
-# This is helpful for testing UI changes, verifying component functionality, checking live preview behavior,
-# and testing the chat interface and code generation.
+# Triggers on PR events to provide automated code review using Claude
+# Custom instructions: Use mcp_playwright tools to launch a browser and interact with the app
+# for testing UI changes, verifying component functionality, and testing the preview feature.
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  pull_request_review_comment:
+    types: [created]
+  issue_comment:
+    types: [created]
 
 permissions:
   pull-requests: write
   contents: read
+  issues: write
 
 jobs:
   review:
@@ -21,33 +25,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Review with Claude
-        uses: anthropics/claude-code-review-action@v1
+      - name: Claude Code Review
+        uses: anthropics/claude-code-action@v1
         with:
-          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          mcp-config: |
-            {
-              "playwright": {
-                "command": "npx",
-                "args": ["@anthropic-ai/claude-code-playwright"],
-                "permissions": {
-                  "allow": [
-                    "mcp__playwright__launch",
-                    "mcp__playwright__navigate",
-                    "mcp__playwright__click",
-                    "mcp__playwright__type",
-                    "mcp__playwright__screenshot",
-                    "mcp__playwright__get_page_content",
-                    "mcp__playwright__evaluate",
-                    "mcp__playwright__wait_for_selector",
-                    "mcp__playwright__fill",
-                    "mcp__playwright__press",
-                    "mcp__playwright__hover",
-                    "mcp__playwright__select_option",
-                    "mcp__playwright__check",
-                    "mcp__playwright__uncheck"
-                  ]
-                }
-              }
-            }
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Provide a thorough code review of the changes in this PR.
+            Focus on:
+            - Code correctness and potential bugs
+            - Performance and efficiency improvements
+            - Best practices and code quality
+            - TypeScript type safety (if applicable)
+            - Testing coverage for new/changed functionality
+
+            Be constructive and provide specific suggestions for improvements.
+          include_fix_links: true
+          use_sticky_comment: true
