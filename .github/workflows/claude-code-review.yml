@@ -6,6 +6,7 @@ on:
 
 jobs:
   claude:
+    if: github.event.comment.body && contains(github.event.comment.body, '@claude')
     runs-on: ubuntu-latest
     permissions:
       contents: read
